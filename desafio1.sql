@@ -2,78 +2,80 @@ DROP DATABASE IF EXISTS SpotifyClone;
 
 CREATE DATABASE SpotifyClone;
 
-CREATE TABLE SpotifyClone.Usuarios(
-	usuario_id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario VARCHAR(20) NOT NULL,
-    idade INT NOT NULL
-) ENGINE=InnoDB;
-
-INSERT INTO SpotifyClone.Usuarios(usuario_id, usuario, idade)  VALUES
-(1, 'Thati', 23),
-(2, 'Cintia', 35),
-(3, 'Bill', 20),
-(4, 'Roger', 45),
-(5, 'Norman', 58),
-(6, 'Patrick', 33),
-(7, 'Vivian', 26),
-(8, 'Carol', 19),
-(9, 'Angelina', 42),
-(10, 'Paul', 46);
-
 CREATE TABLE SpotifyClone.Planos(
 	plano_id INT AUTO_INCREMENT PRIMARY KEY,
     plano VARCHAR(15) NOT NULL,
     valor DOUBLE NOT NULL
 ) ENGINE=InnoDB;
 
-INSERT INTO SpotifyClone.Planos(plano_id, plano, valor)  VALUES
-(1, 'gratuito', 0.00),
-(2, 'familiar', 7.99),
-(3, 'universitário', 5.99),
-(4, 'pessoal', 6.99);
+INSERT INTO SpotifyClone.Planos(plano, valor)  VALUES
+('gratuito', 0.00),
+('familiar', 7.99),
+('universitário', 5.99),
+('pessoal', 6.99);
 
-CREATE TABLE SpotifyClone.Assinaturas(
-	usuario_id INT AUTO_INCREMENT,
+CREATE TABLE SpotifyClone.Usuarios(
+	usuario_id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(20) NOT NULL,
+    idade INT NOT NULL,
     plano_id INT,
     data_assinatura DATE NOT NULL,
-    CONSTRAINT PRIMARY KEY(usuario_id, plano_id),
-    FOREIGN KEY (usuario_id) REFERENCES SpotifyClone.Usuarios(usuario_id),
-    FOREIGN KEY (plano_id) REFERENCES SpotifyClone.Planos(plano_id)
+    FOREIGN KEY (plano_id) REFERENCES Planos(plano_id)
 ) ENGINE=InnoDB;
 
-INSERT INTO SpotifyClone.Assinaturas(usuario_id ,plano_id, data_assinatura) 
-VALUES
-(1, 1, '2019-10-20'),
-(2, 2, '2017-12-30'),
-(3, 3, '2019-06-05'),
-(4, 4, '2020-05-13'),
-(5, 4, '2017-02-17'),
-(6, 2, '2017-01-06'),
-(7, 3, '2018-01-05'),
-(8, 3, '2018-02-14'),
-(9, 2, '2018-04-29'),
-(10, 2, '2017-01-17');
+INSERT INTO SpotifyClone.Usuarios(usuario, idade, plano_id, data_assinatura)  VALUES
+('Thati', 23, 1, '2019-10-20'),
+('Cintia', 35, 2, '2017-12-30'),
+('Bill', 20, 3, '2019-06-05'),
+('Roger', 45, 4, '2020-05-13'),
+('Norman', 58, 4, '2017-02-17'),
+('Patrick', 33, 2, '2017-01-06'),
+('Vivian', 26, 3, '2018-01-05'),
+('Carol', 19, 3, '2018-02-14'),
+('Angelina', 42, 2, '2018-04-29'),
+('Paul', 46, 2, '2017-01-17');
 
 CREATE TABLE SpotifyClone.Artistas(
 	artista_id INT AUTO_INCREMENT PRIMARY KEY,
     artista VARCHAR(30) NOT NULL
 ) ENGINE=InnoDB;
 
-INSERT INTO SpotifyClone.Artistas(artista_id , artista)
+INSERT INTO SpotifyClone.Artistas(artista)
 VALUES
-(1, 'Walter Phoenix'),
-(2, 'Peter Strong'),
-(3, 'Lance Day'),
-(4, 'Freedie Shannon'),
-(5, 'Tyler Isle'),
-(6, 'Fog');
+('Walter Phoenix'),
+('Peter Strong'),
+('Lance Day'),
+('Freedie Shannon'),
+('Tyler Isle'),
+('Fog');
+
+CREATE TABLE SpotifyClone.Albums(
+	album_id INT AUTO_INCREMENT PRIMARY KEY,
+    artista_id INT NOT NULL,
+    album VARCHAR(30) NOT NULL,
+    ano_lancamento YEAR,
+    FOREIGN KEY (artista_id) REFERENCES  Artistas(artista_id)
+) ENGINE=InnoDB;
+
+INSERT INTO SpotifyClone.Albums(artista_id, album, ano_lancamento)
+VALUES
+(1, 'Envious', '1990'),
+(1, 'Exuberant', '1993'),
+(2, 'Hallowed Steam', '1995'),
+(3, 'Incandescent', '1998'),
+(4, 'Temporary Culture', '2001'),
+(4, 'Library of liberty', '2003'),
+(5, 'Chained Down', '2007'),
+(5, 'Cabinet of fools', '2012'),
+(5, 'No guarantees', '2015'),
+(6, 'Apparatus', '2015');
 
 CREATE TABLE SpotifyClone.Seguidores(
 	usuario_id INT,
     artista_id INT,
     CONSTRAINT PRIMARY KEY(usuario_id, artista_id),
-    FOREIGN KEY (usuario_id) REFERENCES SpotifyClone.Usuarios(usuario_id),
-    FOREIGN KEY (artista_id) REFERENCES SpotifyClone.Artistas(artista_id)
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id),
+    FOREIGN KEY (artista_id) REFERENCES Artistas(artista_id)
 ) ENGINE=InnoDB;
 
 INSERT INTO SpotifyClone.Seguidores(usuario_id , artista_id)
@@ -101,87 +103,66 @@ VALUES
 (10, 2),
 (10, 1);
 
-CREATE TABLE SpotifyClone.Albums(
-	album_id INT AUTO_INCREMENT,
-    artista_id INT,
-    album VARCHAR(30) NOT NULL,
-    ano_lancamento YEAR,
-    CONSTRAINT PRIMARY KEY(album_id, artista_id),
-    FOREIGN KEY (artista_id) REFERENCES  Artistas (artista_id)
-) ENGINE=InnoDB;
-
-INSERT INTO SpotifyClone.Albums(album_id ,artista_id, album, ano_lancamento)
-VALUES
-(1, 1, 'Envious', '1990'),
-(2, 1, 'Exuberant', '1993'),
-(3, 2, 'Hallowed Steam', '1995'),
-(4, 3, 'Incandescent', '1998'),
-(5, 4, 'Temporary Culture', '2001'),
-(6, 4, 'Library of liberty', '2003'),
-(7, 5, 'Chained Down', '2007'),
-(8, 5, 'Cabinet of fools', '2012'),
-(9, 5, 'No guarantees', '2015'),
-(10, 6, 'Apparatus', '2015');
-
 CREATE TABLE SpotifyClone.Cancoes(
-	cancao_id INT AUTO_INCREMENT,
-    album_id INT,
-    cancao VARCHAR(50) NOT NULL,
+	cancao_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    album_id INT NOT NULL,
+    artista_id INT NOT NULL,
+    cancao VARCHAR(100) NOT NULL,
     duracao_segundos INT NOT NULL,
-    CONSTRAINT PRIMARY KEY(cancao_id, album_id),
-    FOREIGN KEY (album_id) REFERENCES SpotifyClone.Albums(album_id)
+    FOREIGN KEY (album_id) REFERENCES Albums(album_id),
+    FOREIGN KEY (artista_id) REFERENCES Artistas(artista_id)
 ) ENGINE=InnoDB;
 
-INSERT INTO SpotifyClone.Cancoes(cancao_id , album_id, cancao, duracao_segundos)
+INSERT INTO SpotifyClone.Cancoes(album_id, artista_id, cancao, duracao_segundos)
 VALUES
 (1, 1, 'Soul For Us', 200),
-(2, 1, 'Reflections Of Magic', 163),
-(3, 1, 'Dance With Her Own', 116),
-(4, 2, 'Troubles Of My Inner Fire', 203),
-(5, 2, 'Time Fireworks', 152),
-(6, 3, 'Magic Circus', 105),
-(7, 3, 'Honey, So Do I', 207),
-(8, 3, "Sweetie, Let's Go Wild", 139),
-(9, 3, 'She Knows', 244),
-(10, 4, 'Fantasy For Me', 100),
-(11, 4, 'Celebration Of More', 146),
-(12, 4, 'Rock His Everything', 223),
-(13, 4, 'Home Forever', 231),
-(14, 4, 'Diamond Power', 241),
-(15, 4, "Let's Be Silly", 132),
-(16, 5, 'Thang Of Thunder', 240),
-(17, 5, 'Words Of Her Life', 185),
-(18, 5, 'Without My Streets', 176),
-(19, 6, 'Need Of The Evening', 190),
-(20, 6, 'History Of My Roses', 222),
-(21, 6, 'Without My Love', 111),
-(22, 6, 'Walking And Game', 123),
-(23, 6, 'Young And Father', 197),
-(24, 7, 'Finding My Traditions', 179),
-(25, 7, 'Walking And Man', 229),
-(26, 7, 'Hard And Time', 135),
-(27, 7, "Honey, I'm A Lone Wolf", 150),
-(28, 8, "She Thinks I Won't Stay Tonight", 166),
-(29, 8, "He Heard You're Bad For Me", 154),
-(30, 8, "He Hopes We Can't Stay", 210),
-(31, 8, 'I Know I Know', 177),
-(32, 9, "He's Walking Away", 159),
-(33, 9, "He's Trouble", 138),
-(34, 9, 'I Heard I Want To Bo Alone', 120),
-(35, 9, 'I Ride Alone', 151),
-(36, 10, 'Honey', 79),
-(37, 10, 'You Cheated On Me', 95),
-(38, 10, "Wouldn't It Be Nice", 213),
-(39, 10, 'Baby', 136),
-(40, 10, 'You Make Me Feel So..', 83);
+(1, 1, 'Reflections Of Magic', 163),
+(1, 1, 'Dance With Her Own', 116),
+(2, 1, 'Troubles Of My Inner Fire', 203),
+(2, 1, 'Time Fireworks', 152),
+(3, 2, 'Magic Circus', 105),
+(3, 2, 'Honey, So Do I', 207),
+(3, 2, "Sweetie, Let's Go Wild", 139),
+(3, 2, 'She Knows', 244),
+(4, 3, 'Fantasy For Me', 100),
+(4, 3, 'Celebration Of More', 146),
+(4, 3, 'Rock His Everything', 223),
+(4, 3, 'Home Forever', 231),
+(4, 3, 'Diamond Power', 241),
+(4, 3, "Let's Be Silly", 132),
+(5, 4, 'Thang Of Thunder', 240),
+(5, 4, 'Words Of Her Life', 185),
+(5, 4, 'Without My Streets', 176),
+(6, 4, 'Need Of The Evening', 190),
+(6, 4, 'History Of My Roses', 222),
+(6, 4, 'Without My Love', 111),
+(6, 4, 'Walking And Game', 123),
+(6, 4, 'Young And Father', 197),
+(7, 5, 'Finding My Traditions', 179),
+(7, 5, 'Walking And Man', 229),
+(7, 5, 'Hard And Time', 135),
+(7, 5, "Honey, I'm A Lone Wolf", 150),
+(8, 5, "She Thinks I Won't Stay Tonight", 166),
+(8, 5, "He Heard You're Bad For Me", 154),
+(8, 5, "He Hopes We Can't Stay", 210),
+(8, 5, 'I Know I Know', 177),
+(9, 5, "He's Walking Away", 159),
+(9, 5, "He's Trouble", 138),
+(9, 5, 'I Heard I Want To Bo Alone', 120),
+(9, 5, 'I Ride Alone', 151),
+(10, 6, 'Honey', 79),
+(10, 6, 'You Cheated On Me', 95),
+(10, 6, "Wouldn't It Be Nice", 213),
+(10, 6, 'Baby', 136),
+(10, 6, 'You Make Me Feel So..', 83);
 
 CREATE TABLE SpotifyClone.HistoricoReproducoes(
-	usuario_id INT,
-    cancao_id INT,
+	usuario_id INT NOT NULL,
+    cancao_id INT NOT NULL,
     data_reproducao DATETIME NOT NULL,
     CONSTRAINT PRIMARY KEY(usuario_id, cancao_id),
-    FOREIGN KEY (usuario_id) REFERENCES SpotifyClone.Usuarios(usuario_id),
-    FOREIGN KEY (cancao_id) REFERENCES SpotifyClone.Cancoes(cancao_id)
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id),
+    FOREIGN KEY (cancao_id) REFERENCES Cancoes(cancao_id)
 ) ENGINE=InnoDB;
 
 INSERT INTO SpotifyClone.HistoricoReproducoes(usuario_id , cancao_id, data_reproducao)
