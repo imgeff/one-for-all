@@ -101,7 +101,7 @@ VALUES
 (9, 4),
 (9, 3),
 (10, 2),
-(10, 1);
+(10, 6);
 
 CREATE TABLE SpotifyClone.Cancoes(
 	cancao_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
