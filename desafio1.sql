@@ -5,7 +5,7 @@ CREATE DATABASE SpotifyClone;
 CREATE TABLE SpotifyClone.Planos(
 	plano_id INT AUTO_INCREMENT PRIMARY KEY,
     plano VARCHAR(15) NOT NULL,
-    valor DOUBLE NOT NULL
+    valor DECIMAL(3, 2) NOT NULL
 ) ENGINE=InnoDB;
 
 INSERT INTO SpotifyClone.Planos(plano, valor)  VALUES
