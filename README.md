@@ -1,7 +1,7 @@
 # One for All
 
 # Contexto
-O projeto All For One foi criado para colocar em prática funções SQL, JOINS e Normalização de banco de dados. Para isso foi utilizado o banco de dados fictício `SpotifyClone` com tabelas não normalizadas.
+O projeto One for All foi criado para colocar em prática funções SQL, JOINS e Normalização de banco de dados. Para isso foi utilizado o banco de dados fictício `SpotifyClone` com tabelas não normalizadas.
 
 ## Habilidades Desenvolvidas
 
